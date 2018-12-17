@@ -1,15 +1,30 @@
 package rocks.turncodr.mycurriculum.model;
 
+import java.util.Comparator;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
-import javax.persistence.*;
 
 /**
  * Entity module.
  */
 @Entity
 public class Module {
-
+    
+    public static final Comparator<Module> ALPHABETICAL_ORDER = new Comparator<Module>() {
+        public int compare(Module module1, Module module2) {
+            int res = String.CASE_INSENSITIVE_ORDER.compare(module1.getCode(), module2.getCode());
+            if (res == 0) {
+                res = module1.getCode().compareTo(module2.getCode());
+            }
+            return res;
+        }
+    };
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
